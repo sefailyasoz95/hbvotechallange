@@ -11,7 +11,7 @@ const SubmitLink = ({ onClick }) => {
 					className='float-left'
 					style={{ width: 100, height: 105, margin: 5 }}>
 					<Button className='btn-lg p-4' onClick={onClick}>
-						<i class='fas fa-plus text-white' style={{ fontSize: 50 }}></i>
+						<i className='fas fa-plus text-white' style={{ fontSize: 50 }}></i>
 					</Button>
 				</div>
 				<div className='float-right mt-4' style={{ width: 250, margin: 5 }}>

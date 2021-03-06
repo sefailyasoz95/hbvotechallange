@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "react-bootstrap/Button";
 
-const LinkBox = ({ voteCount, link, linkTitle }) => {
+const LinkBox = ({ id, voteCount, link, linkTitle }) => {
 	const [vote, setVote] = useState(voteCount);
+	var getData =
+	JSON.parse(localStorage.getItem("data")) == null
+		? []
+		: JSON.parse(localStorage.getItem("data"));
 
+	
 	return (
 		<>
 			<div
@@ -19,11 +23,12 @@ const LinkBox = ({ voteCount, link, linkTitle }) => {
 				<div className='float-left' style={{ width: 250, margin: 5 }}>
 					<span style={{ fontWeight: 600, fontSize: 25 }}>{linkTitle}</span>
 					<p style={{ fontSize: 14 }}>( {link} )</p>
-					<div className=''>
+					<div>
 						<Button
 							className='btn-success btn-sm float-left'
 							onClick={() => {
 								setVote(vote + 1);
+								console.log(getData.find(x => x.id === id).vote)
 							}}>
 							<i className='p-2 fas fa-arrow-up text-light'></i>
 						</Button>
@@ -31,7 +36,10 @@ const LinkBox = ({ voteCount, link, linkTitle }) => {
 							<i
 								className='p-2 fas fa-arrow-down text-light'
 								onClick={() => {
+									var currentVote = getData.find(x => x.id === id).vote
 									setVote(vote - 1);
+									currentVote = vote
+									console.log("current: ",currentVote)
 								}}></i>
 						</Button>
 					</div>
