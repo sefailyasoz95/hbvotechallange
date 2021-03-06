@@ -5,30 +5,41 @@ import Sorter from "../components/Sorter/Sorter";
 import SubmitLink from "../components/SubmitLink/SubmitLink";
 import Pagination from "../components/Pagination/Pagination";
 
-const ListPage = ({ onClick }) => {
+const ListPage = ({ onClick, savedData }) => {
 	// localStorage.removeItem("data");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemPerPage] = useState(5);
-	var getData =
-		JSON.parse(localStorage.getItem("data")) == null
-			? []
-			: JSON.parse(localStorage.getItem("data"));
 	const indexOfLastItem = currentPage * itemPerPage;
 	const indexOfFirstItem = indexOfLastItem - itemPerPage;
-	const currentItems = getData.slice(indexOfFirstItem, indexOfLastItem);
-
+	const currentItems = savedData.slice(indexOfFirstItem, indexOfLastItem);
+	const [initialSort, setInitialSort] = useState(currentItems.reverse());
 	const paginate = (pageNumber) => {
 		setCurrentPage(pageNumber);
 	};
 
+	const onSort = (sortBy) => {
+		// if (sortBy === "default") {
+		// 	return;
+		// } else if (sortBy === "most") {
+		// 	setInitialSort(
+		// 		currentItems.sort(function compare(a, b) {
+		// 			return a.vote - b.vote === 0
+		// 				? a.name.toLowerCase() - b.name.toLowerCase()
+		// 				: a.vote - b.vote;
+		// 		})
+		// 	);
+		// 	console.log("xx: ", initialSort);
+		// }
+	};
 	return (
 		<div className='container'>
 			<SubmitLink onClick={onClick} />
-			<Sorter />
-			{getData.length === 0 ? (
+			<Sorter savedData={savedData} onSort={onSort} />
+			{savedData.length === 0 ? (
 				<LinkBox
-					linkTitle='Henüz bir'
-					link='https://kayiteklenmedi.com'
+					id={0}
+					linkTitle='YouHaveNot'
+					link='https://addanythingyet.com'
 					voteCount={0}
 				/>
 			) : (
@@ -36,17 +47,19 @@ const ListPage = ({ onClick }) => {
 					.reverse()
 					.map((data) => (
 						<LinkBox
+							key={data.id}
 							id={data.id}
 							linkTitle={data.name}
 							link={data.url}
 							voteCount={data.vote}
+							savedData={savedData}
 						/>
 					))
 			)}
-			{getData.length > 5 ? (
+			{savedData.length > 5 ? (
 				<Pagination
 					itemPerPage={itemPerPage}
-					totalItem={getData.length}
+					totalItem={savedData.length}
 					paginate={paginate}
 				/>
 			) : (

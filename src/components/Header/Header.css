@@ -1,8 +1,18 @@
-.navbarBrand {
+.brand small {
+	color: black;
+	font-weight: 700;
+}
+
+.brand span {
 	color: darkorange;
 	font-weight: 700;
 }
 
-.spanstyle {
-	color: black;
+.linkVote span {
+	font-weight: 700;
+}
+
+.linkVote small {
+	font-weight: 400;
+	font-size: 18px;
 }

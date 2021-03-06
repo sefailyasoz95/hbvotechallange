@@ -3,37 +3,46 @@ import Button from "react-bootstrap/Button";
 import { Modal } from "react-bootstrap/";
 import "./LinkBox.css";
 
-const LinkBox = ({ id, voteCount, link, linkTitle }) => {
+const LinkBox = ({ id, voteCount, link, linkTitle, savedData }) => {
 	const [vote, setVote] = useState(voteCount);
 	const [show, setShow] = useState(false);
+	const [smShow, setSmShow] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
 	var getData =
 		JSON.parse(localStorage.getItem("data")) == null
 			? []
 			: JSON.parse(localStorage.getItem("data"));
-
-	const handleUpVote = () => {
+	useEffect(() => {
+		getData.sort(compare);
+	}, [getData]);
+	function compare(a, b) {
+		return a.vote - b.vote === 0
+			? a.name.toLowerCase() - b.name.toLowerCase()
+			: b.vote - a.vote;
+	}
+	console.log("sorted: ", getData);
+	const handleUpVote = async () => {
 		var up = getData.find((x) => x.id === id);
 		for (var i = 0; i < getData.length; i++) {
 			if (getData[i] === up) {
-				getData[i].vote = vote + 1;
+				getData[i].vote += 1;
 			}
 		}
-		setVote(vote + 1);
+		await setVote(vote + 1);
 		localStorage.setItem("data", JSON.stringify(getData));
 		console.log(getData);
 		window.location.reload();
 	};
 
-	const handleDownVote = () => {
+	const handleDownVote = async () => {
 		var down = getData.find((x) => x.id === id);
 		for (var i = 0; i < getData.length; i++) {
 			if (getData[i] === down) {
-				getData[i].vote = vote - 1;
+				getData[i].vote -= 1;
 			}
 		}
-		setVote(vote - 1);
+		await setVote(vote - 1);
 		localStorage.setItem("data", JSON.stringify(getData));
 		console.log(getData);
 		window.location.reload();
@@ -46,9 +55,11 @@ const LinkBox = ({ id, voteCount, link, linkTitle }) => {
 				getData.splice(i, 1);
 			}
 		}
+		setSmShow(true);
 		localStorage.setItem("data", JSON.stringify(getData));
-		console.log("get", getData);
-		window.location.reload();
+		setTimeout(() => {
+			window.location.reload();
+		}, 1500);
 	};
 	return (
 		<>
@@ -102,6 +113,20 @@ const LinkBox = ({ id, voteCount, link, linkTitle }) => {
 						Yes
 					</Button>
 				</Modal.Footer>
+			</Modal>
+
+			<Modal
+				size='sm'
+				show={smShow}
+				onHide={() => setSmShow(false)}
+				aria-labelledby='example-modal-sizes-title-sm'>
+				<Modal.Header closeButton className='bg-light'>
+					<Modal.Title
+						id='example-modal-sizes-title-sm'
+						className='text-danger'>
+						<span className='font-weight-bold'>{linkTitle}</span> removed.
+					</Modal.Title>
+				</Modal.Header>
 			</Modal>
 		</>
 	);

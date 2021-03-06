@@ -5,23 +5,30 @@ import ListPage from "./pages/ListPage";
 import AddLinkPage from "./pages/AddLinkPage";
 function App() {
 	const [changePage, setChangePage] = useState(true);
+	var getData =
+		JSON.parse(localStorage.getItem("data")) == null
+			? []
+			: JSON.parse(localStorage.getItem("data"));
 	return (
-		<div className='App-header container'>
-			<Header />
-			{changePage ? (
-				<ListPage
-					onClick={() => {
-						setChangePage(!changePage);
-					}}
-				/>
-			) : (
-				<AddLinkPage
-					onClick={() => {
-						setChangePage(!changePage);
-					}}
-				/>
-			)}
-		</div>
+		<>
+			<div className='App-header container'>
+				<Header />
+				{changePage ? (
+					<ListPage
+						savedData={getData}
+						onClick={() => {
+							setChangePage(!changePage);
+						}}
+					/>
+				) : (
+					<AddLinkPage
+						onClick={() => {
+							setChangePage(!changePage);
+						}}
+					/>
+				)}
+			</div>
+		</>
 	);
 }
 

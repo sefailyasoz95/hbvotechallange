@@ -1,4 +1,5 @@
 import React from "react";
+import { Pagination as Pagi } from "react-bootstrap";
 
 const Pagination = ({ itemPerPage, totalItem, paginate }) => {
 	const pageNumbers = [];
@@ -6,23 +7,17 @@ const Pagination = ({ itemPerPage, totalItem, paginate }) => {
 		pageNumbers.push(i);
 	}
 	return (
-		<>
-			<nav>
-				<ul className='pagination'>
-					{pageNumbers.map((number) => (
-						<li key={number} className='page-item'>
-							<a
-								href='!#'
-								onClick={() => paginate(number)}
-								className='page-link'>
-								{number}
-							</a>
-						</li>
-					))}
-				</ul>
-			</nav>
-			<hr />
-		</>
+		<div>
+			<Pagi size='sm'>
+				{pageNumbers.map((number) => (
+					<li key={number} className='page-item'>
+						<a href='!#' onClick={() => paginate(number)} className='page-link'>
+							{number}
+						</a>
+					</li>
+				))}
+			</Pagi>
+		</div>
 	);
 };
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { Navbar } from "react-bootstrap";
+import "./Header.css";
 const Header = () => {
 	return (
 		<>
@@ -9,12 +10,13 @@ const Header = () => {
 				style={{
 					borderRadius: 15,
 				}}>
-				<Navbar.Brand style={{ color: "darkorange", fontWeight: 700 }}>
-					Hepsiburada<span style={{ color: "black" }}>.com</span>
+				<Navbar.Brand className='brand'>
+					<span>Hepsiburada</span>
+					<small>.com</small>
 				</Navbar.Brand>
-				<Navbar.Brand>
-					<span style={{ fontWeight: 700 }}>Link</span>
-					<span style={{ fontWeight: 300 }}>VOTE</span> Challange
+				<Navbar.Brand className='linkVote'>
+					<span>Link</span>
+					<small>VOTE</small> Challange
 				</Navbar.Brand>
 			</Navbar>
 		</>
