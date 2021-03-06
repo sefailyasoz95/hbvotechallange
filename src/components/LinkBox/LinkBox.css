@@ -1,0 +1,49 @@
+.box {
+}
+
+.box:hover {
+	/* background-color: #333; */
+	border-radius: 15px;
+	color: #888;
+}
+
+.pointsBox {
+	border: 2px solid white;
+	border-radius: 10px;
+}
+.box:hover .pointsBox {
+	border: 2px solid #888;
+}
+
+.delete-btn {
+	cursor: pointer;
+	border: 0;
+	border-radius: 5px;
+	position: relative;
+	color: #fff;
+	font-size: 25px;
+	float: right;
+	opacity: 0;
+}
+
+.box:hover .delete-btn {
+	opacity: 1;
+}
+
+.linkBox span {
+	font-weight: 600;
+	font-size: 25px;
+}
+
+.linkBox p {
+	font-size: 14px;
+}
+
+.pointsBox span {
+	font-weight: 800;
+	font-size: 30px;
+}
+
+.pointsBox p {
+	font-size: 18px;
+}

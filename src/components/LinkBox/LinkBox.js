@@ -1,51 +1,108 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
+import { Modal } from "react-bootstrap/";
+import "./LinkBox.css";
 
 const LinkBox = ({ id, voteCount, link, linkTitle }) => {
 	const [vote, setVote] = useState(voteCount);
+	const [show, setShow] = useState(false);
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
 	var getData =
-	JSON.parse(localStorage.getItem("data")) == null
-		? []
-		: JSON.parse(localStorage.getItem("data"));
+		JSON.parse(localStorage.getItem("data")) == null
+			? []
+			: JSON.parse(localStorage.getItem("data"));
 
-	
+	const handleUpVote = () => {
+		var up = getData.find((x) => x.id === id);
+		for (var i = 0; i < getData.length; i++) {
+			if (getData[i] === up) {
+				getData[i].vote = vote + 1;
+			}
+		}
+		setVote(vote + 1);
+		localStorage.setItem("data", JSON.stringify(getData));
+		console.log(getData);
+		window.location.reload();
+	};
+
+	const handleDownVote = () => {
+		var down = getData.find((x) => x.id === id);
+		for (var i = 0; i < getData.length; i++) {
+			if (getData[i] === down) {
+				getData[i].vote = vote - 1;
+			}
+		}
+		setVote(vote - 1);
+		localStorage.setItem("data", JSON.stringify(getData));
+		console.log(getData);
+		window.location.reload();
+	};
+	const handleLinkDelete = () => {
+		var del = getData.find((x) => x.id === id);
+		console.log("del", del);
+		for (var i = 0; i < getData.length; i++) {
+			if (getData[i] === del) {
+				getData.splice(i, 1);
+			}
+		}
+		localStorage.setItem("data", JSON.stringify(getData));
+		console.log("get", getData);
+		window.location.reload();
+	};
 	return (
 		<>
-			<div
-				className='container text-center d-inline-block'
-				style={{ maxWidth: 405, marginLeft: 340 }}>
-				<div
-					className='border-light px-3 py-1 rounded-lg border pt-3 float-left'
-					style={{ width: 100, height: 120, margin: 5 }}>
-					<span style={{ fontWeight: 800, fontSize: 30 }}>{vote}</span>
-					<p style={{ fontSize: 18 }}>points</p>
-				</div>
-				<div className='float-left' style={{ width: 250, margin: 5 }}>
-					<span style={{ fontWeight: 600, fontSize: 25 }}>{linkTitle}</span>
-					<p style={{ fontSize: 14 }}>( {link} )</p>
-					<div>
-						<Button
-							className='btn-success btn-sm float-left'
-							onClick={() => {
-								setVote(vote + 1);
-								console.log(getData.find(x => x.id === id).vote)
-							}}>
-							<i className='p-2 fas fa-arrow-up text-light'></i>
-						</Button>
-						<Button className='btn-danger btn-sm float-right'>
-							<i
-								className='p-2 fas fa-arrow-down text-light'
-								onClick={() => {
-									var currentVote = getData.find(x => x.id === id).vote
-									setVote(vote - 1);
-									currentVote = vote
-									console.log("current: ",currentVote)
-								}}></i>
-						</Button>
+			<div className='container text-center box'>
+				<div className='row justify-content-center'>
+					<div className='py-3 col-md-1 pointsBox'>
+						<span>{vote}</span>
+						<p>points</p>
+					</div>
+					<div className='col-md-3 linkBox'>
+						<i
+							className='fas fa-times delete-btn text-danger'
+							onClick={handleShow}></i>
+						<span>{linkTitle}</span>
+						<p>( {link} )</p>
+						<div>
+							<Button
+								className='btn-success btn-sm float-left'
+								onClick={handleUpVote}>
+								<i className='fas fa-arrow-up text-light'></i>
+							</Button>
+							<Button
+								className='btn-danger btn-sm float-right'
+								onClick={handleDownVote}>
+								<i className='fas fa-arrow-down text-light'></i>
+							</Button>
+						</div>
 					</div>
 				</div>
 			</div>
 			<hr className='text-danger border border-light' />
+
+			<Modal show={show} onHide={handleClose} animation={true}>
+				<Modal.Header closeButton>
+					<Modal.Title>Remove Link</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					Do you want to delete
+					<span className='text-danger font-weight-bold'> {linkTitle}</span> ?
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant='primary' onClick={handleClose}>
+						No
+					</Button>
+					<Button
+						variant='dark'
+						onClick={() => {
+							handleClose();
+							handleLinkDelete();
+						}}>
+						Yes
+					</Button>
+				</Modal.Footer>
+			</Modal>
 		</>
 	);
 };

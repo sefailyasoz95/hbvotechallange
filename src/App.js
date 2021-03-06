@@ -4,7 +4,7 @@ import { useState } from "react";
 import ListPage from "./pages/ListPage";
 import AddLinkPage from "./pages/AddLinkPage";
 function App() {
-	const [changePage, setChangePage] = useState(1);
+	const [changePage, setChangePage] = useState(true);
 	return (
 		<div className='App-header container'>
 			<Header />
