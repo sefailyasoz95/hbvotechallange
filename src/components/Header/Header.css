@@ -7,7 +7,9 @@
 	color: darkorange;
 	font-weight: 700;
 }
-
+.brand a {
+	text-decoration: none;
+}
 .linkVote span {
 	font-weight: 700;
 }

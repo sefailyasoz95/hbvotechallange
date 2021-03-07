@@ -5,13 +5,16 @@ const Header = () => {
 	return (
 		<>
 			<Navbar
+				data-testid='testContainer'
 				bg='light'
 				className='col-md-10 mx-auto justify-content-between sticky-top'
 				style={{
 					borderRadius: 15,
 				}}>
 				<Navbar.Brand className='brand'>
-					<span>Hepsiburada</span>
+					<a href='/'>
+						<span>Hepsiburada</span>
+					</a>
 					<small>.com</small>
 				</Navbar.Brand>
 				<Navbar.Brand className='linkVote'>

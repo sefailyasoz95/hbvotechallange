@@ -1,9 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { Modal } from "react-bootstrap/";
 import "./LinkBox.css";
 
-const LinkBox = ({ id, voteCount, link, linkTitle, savedData }) => {
+const LinkBox = ({
+	id,
+	voteCount,
+	link,
+	linkTitle,
+	savedData,
+	handleUpVote,
+	handleDownVote,
+}) => {
 	const [vote, setVote] = useState(voteCount);
 	const [show, setShow] = useState(false);
 	const [smShow, setSmShow] = useState(false);
@@ -13,59 +21,29 @@ const LinkBox = ({ id, voteCount, link, linkTitle, savedData }) => {
 		JSON.parse(localStorage.getItem("data")) == null
 			? []
 			: JSON.parse(localStorage.getItem("data"));
-	useEffect(() => {
-		getData.sort(compare);
-	}, [getData]);
-	function compare(a, b) {
-		return a.vote - b.vote === 0
-			? a.name.toLowerCase() - b.name.toLowerCase()
-			: b.vote - a.vote;
-	}
-	console.log("sorted: ", getData);
-	const handleUpVote = async () => {
-		var up = getData.find((x) => x.id === id);
-		for (var i = 0; i < getData.length; i++) {
-			if (getData[i] === up) {
-				getData[i].vote += 1;
-			}
-		}
-		await setVote(vote + 1);
-		localStorage.setItem("data", JSON.stringify(getData));
-		console.log(getData);
-		window.location.reload();
-	};
 
-	const handleDownVote = async () => {
-		var down = getData.find((x) => x.id === id);
-		for (var i = 0; i < getData.length; i++) {
-			if (getData[i] === down) {
-				getData[i].vote -= 1;
-			}
-		}
-		await setVote(vote - 1);
-		localStorage.setItem("data", JSON.stringify(getData));
-		console.log(getData);
-		window.location.reload();
-	};
 	const handleLinkDelete = () => {
+		// find the item that is gonna be deleted
 		var del = getData.find((x) => x.id === id);
-		console.log("del", del);
 		for (var i = 0; i < getData.length; i++) {
 			if (getData[i] === del) {
 				getData.splice(i, 1);
 			}
 		}
+		// once user clicked yes on the modal show the deleted modal message
 		setSmShow(true);
+		// update the localStorage data
 		localStorage.setItem("data", JSON.stringify(getData));
+		// 1.5 seconds later refresh the page in order to show the updated data
 		setTimeout(() => {
 			window.location.reload();
 		}, 1500);
 	};
 	return (
 		<>
-			<div className='container text-center box'>
+			<div className='container text-center box' data-testid='testContainer'>
 				<div className='row justify-content-center'>
-					<div className='py-3 col-md-1 pointsBox'>
+					<div className='pt-2 col-md-1 pointsBox'>
 						<span>{vote}</span>
 						<p>points</p>
 					</div>
@@ -78,12 +56,18 @@ const LinkBox = ({ id, voteCount, link, linkTitle, savedData }) => {
 						<div>
 							<Button
 								className='btn-success btn-sm float-left'
-								onClick={handleUpVote}>
+								onClick={() => {
+									handleUpVote();
+									setVote(vote + 1);
+								}}>
 								<i className='fas fa-arrow-up text-light'></i>
 							</Button>
 							<Button
 								className='btn-danger btn-sm float-right'
-								onClick={handleDownVote}>
+								onClick={() => {
+									handleDownVote();
+									setVote(vote - 1);
+								}}>
 								<i className='fas fa-arrow-down text-light'></i>
 							</Button>
 						</div>

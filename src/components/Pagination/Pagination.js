@@ -7,11 +7,11 @@ const Pagination = ({ itemPerPage, totalItem, paginate }) => {
 		pageNumbers.push(i);
 	}
 	return (
-		<div>
+		<div data-testid='testContainer'>
 			<Pagi size='sm'>
 				{pageNumbers.map((number) => (
 					<li key={number} className='page-item'>
-						<a href='!#' onClick={() => paginate(number)} className='page-link'>
+						<a href='#' onClick={() => paginate(number)} className='page-link'>
 							{number}
 						</a>
 					</li>

@@ -4,7 +4,7 @@ import { Form } from "react-bootstrap";
 const Sorter = ({ savedData, onSort }) => {
 	return (
 		<>
-			<div className='container col-md-3'>
+			<div className='container col-md-3' data-testid='testContainer'>
 				<Form.Group>
 					<Form.Control as='select' onChange={(e) => onSort(e.target.value)}>
 						<option value='default'>Order By</option>
